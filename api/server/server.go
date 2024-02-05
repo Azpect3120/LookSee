@@ -10,11 +10,10 @@ import (
 	"github.com/gorilla/sessions"
 )
 
-const CONN_STRING string = "postgres://sthrthra:npQWeHYhjir04iXWNaCbRujOsGohMKRV@kashin.db.elephantsql.com/sthrthra"
 const SESSION_KEY string = "iruabjinajabkjabgmabgaj"
 
-func Create(port int) (*model.Server, error) {
-	if db, err := database.Create(CONN_STRING); err != nil {
+func Create(port int, connectionString string) (*model.Server, error) {
+	if db, err := database.Create(connectionString); err != nil {
 		return nil, err
 	} else {
 		store := sessions.NewCookieStore([]byte(SESSION_KEY))
