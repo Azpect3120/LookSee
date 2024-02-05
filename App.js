@@ -1,11 +1,16 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
+import { useFonts } from 'expo-font';
 
 export default function App() {
+
+  const [fontsLoaded] = useFonts({
+    'Red Hat Display': require("./assets/fonts/RedHatDisplay-VariableFont_wght.ttf"),
+  });
+
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
+      <Text style={styles.customText}>LookSee!</Text>
     </View>
   );
 }
@@ -13,8 +18,12 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#f54242',
     alignItems: 'center',
     justifyContent: 'center',
   },
+  customText: {
+    fontFamily: 'Red Hat Display',
+    fontSize: 40,
+  }
 });
