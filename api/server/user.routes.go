@@ -21,6 +21,7 @@ func LoginWithName(w http.ResponseWriter, r *http.Request, s *model.Server) {
 	// Ensure method is POST
 	if r.Method != http.MethodPost {
 		http.Error(w, "Method not allowed.", http.StatusMethodNotAllowed)
+		Log(r, http.StatusMethodNotAllowed)
 		return
 	}
 
@@ -28,6 +29,7 @@ func LoginWithName(w http.ResponseWriter, r *http.Request, s *model.Server) {
 	body, err := io.ReadAll(r.Body)
 	if err != nil {
 		http.Error(w, "Error reading request body", http.StatusBadRequest)
+		Log(r, http.StatusBadRequest)
 		return
 	}
 
@@ -35,6 +37,7 @@ func LoginWithName(w http.ResponseWriter, r *http.Request, s *model.Server) {
 	var req LoginRequest
 	if err := json.Unmarshal(body, &req); err != nil {
 		http.Error(w, "Error unmarshalling JSON", http.StatusBadRequest)
+		Log(r, http.StatusBadRequest)
 		return
 	}
 
@@ -44,4 +47,7 @@ func LoginWithName(w http.ResponseWriter, r *http.Request, s *model.Server) {
 	// Send response
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte(fmt.Sprintf("Logging in as: %s", req.Name)))
+
+	// Log to console
+	Log(r, http.StatusOK)
 }

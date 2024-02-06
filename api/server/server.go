@@ -3,6 +3,7 @@ package server
 import (
 	"fmt"
 	"net/http"
+	"strings"
 
 	"github.com/Azpect3120/LookSee/api/database"
 	"github.com/Azpect3120/LookSee/api/model"
@@ -20,23 +21,23 @@ func Create(port int, connectionString string) (*model.Server, error) {
 		return &model.Server{
 			Router:    mux.NewRouter(),
 			Port:      port,
-			Endpoints: make(map[string]func(http.ResponseWriter, *http.Request)),
+			Endpoints: make(map[[2]string]func(http.ResponseWriter, *http.Request)),
 			Database:  db,
 			Session:   sessions.NewSession(store, "session"),
 		}, nil
 	}
 }
 
-func NewEndpoint(server *model.Server, endpoint string, handler func(http.ResponseWriter, *http.Request)) {
-	server.Endpoints[endpoint] = handler
+func NewEndpoint(server *model.Server, method, endpoint string, handler func(http.ResponseWriter, *http.Request)) {
+	server.Endpoints[[2]string{endpoint, strings.ToUpper(method)}] = handler
 }
 
 func Listen(server *model.Server) error {
 	for endpoint, handler := range server.Endpoints {
-		fmt.Printf("%s was loaded.\n", endpoint)
-		server.Router.HandleFunc(endpoint, handler)
+		fmt.Printf("%s to %s was loaded.\n", endpoint[1], endpoint[0])
+		server.Router.HandleFunc(endpoint[0], handler)
 	}
 
-	fmt.Printf("Server is live on port %d...", server.Port)
+	fmt.Printf("Server is live on port %d...\n\n", server.Port)
 	return http.ListenAndServe(fmt.Sprintf(":%d", server.Port), server.Router)
 }

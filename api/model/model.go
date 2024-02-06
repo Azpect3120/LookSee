@@ -14,9 +14,10 @@ type Database struct {
 }
 
 type Server struct {
-	Router    *mux.Router
-	Port      int
-	Endpoints map[string]func(http.ResponseWriter, *http.Request)
+	Router *mux.Router
+	Port   int
+	// Array will store [ "/endpoint", "METHOD" ]
+	Endpoints map[[2]string]func(http.ResponseWriter, *http.Request)
 	Database  *Database
 	Session   *sessions.Session
 }
