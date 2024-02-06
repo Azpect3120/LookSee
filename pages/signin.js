@@ -1,9 +1,12 @@
-import {Text} from 'react-native';
+import { Text } from 'react-native';
+import { Link } from 'react-router-native';
 
 export const Signin = ()=>{
     return(
         <>
-            <Text>This is the Signin</Text>
+            <View>
+                <Text>This is the Signin</Text>
+            </View>
         </>
     )
 }
