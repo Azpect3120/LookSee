@@ -1,15 +1,20 @@
 // Assuming this is in Signin.js
 import React, { useState } from 'react';
-import { Text, StyleSheet, View, TouchableOpacity, TextInput } from 'react-native';
+import { Text, StyleSheet, View, TouchableOpacity, TextInput, KeyboardAvoidingView, Platform } from 'react-native';
 import { useNavigate } from 'react-router-native';
+import { useFonts } from 'expo-font';
 
 export const Signin = () => {
   const [name, setName] = useState('');
   const navigate = useNavigate();
 
   const handleContinue = () => {
-    navigate('/welcome', { state: { name } });
+    navigate('/home', { state: { name } });
   };
+
+  const [fontsLoaded] = useFonts({
+    'Arvo Bold': require("../assets/fonts/Arvo-Bold.ttf"),
+  });
 
   return (
     <View style={styles.container}>
@@ -20,12 +25,14 @@ export const Signin = () => {
       <TouchableOpacity style={[styles.button, styles.facebookButton]}>
         <Text style={styles.buttonText}>Sign in with Facebook</Text>
       </TouchableOpacity>
-      <TextInput
-        style={styles.input}
-        placeholder="Continue with name"
-        onChangeText={setName}
-        value={name}
-      />
+      <KeyboardAvoidingView behavior={(Platform.OS = 'ios') ? "padding" : "height"}>
+        <TextInput
+          style={styles.input}
+          placeholder="Continue with name"
+          onChangeText={setName}
+          value={name}
+        />
+      </KeyboardAvoidingView>
       <TouchableOpacity style={[styles.buttonlil, styles.continueButton]} onPress={handleContinue}>
         <Text style={styles.buttonText}>Continue</Text>
       </TouchableOpacity>
@@ -44,6 +51,7 @@ const styles = StyleSheet.create({
     fontSize: 36,
     fontWeight: 'bold',
     marginBottom: 60,
+    fontFamily: 'Arvo Bold',
   },
   button: {
     width: '80%',
@@ -84,10 +92,3 @@ const styles = StyleSheet.create({
   },
 });
 
-export const Signin = ()=>{
-    return(
-        <>
-            <Text>This is the Signin</Text>
-        </>
-    )
-}

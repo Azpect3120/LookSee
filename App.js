@@ -7,15 +7,12 @@ import WelcomePage from "./pages/welcomepage";
 
 export default function App() {
 
-  const [fontsLoaded] = useFonts({
-    'Red Hat Display': require("./assets/fonts/RedHatDisplay-VariableFont_wght.ttf"),
-  });
-
   return (
     <View style={styles.container}>
       <NativeRouter>
         <Routes>
           <Route path="/" element={<Signin />} />
+          <Route path="/home" element={<Home />} />
         </Routes>
       </NativeRouter>
     </View>

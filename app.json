@@ -31,7 +31,9 @@
         "expo-font",
         {
           "fonts": [
-            "./assets/fonts/RedHatDisplay-VariableFont_wght.ttf"
+            "./assets/fonts/RedHatDisplay-VariableFont_wght.ttf",
+            "./assets/fonts/Arvo-Bold.ttf",
+            "./assets/fonts/Arvo-Regular.ttf"
           ]
         }
       ]
