@@ -19,7 +19,6 @@ export const Home = () => {
 
     return(
         <>
-            <StatusBar barStyle='light-content' />
             <View style={styles.container}>
                 <TouchableOpacity onPress={handleSignIn}>
                     <Text style={styles.header}>LookSee!</Text>
@@ -40,6 +39,8 @@ export const Home = () => {
 
 const styles = StyleSheet.create({
     container: {
+
+        width: '100%',
         flex: 1,
         backgroundColor: '#fff',
     },
@@ -48,20 +49,21 @@ const styles = StyleSheet.create({
         paddingTop: 65,
         paddingLeft: 20,
         paddingBottom: 15,
-        width: 400,
+        width: '100%',
         color: '#fff',
         textAlign: 'left',
         fontSize: 35,
         fontFamily: 'Arvo Bold',
     },
     content: {
-        height:600,
+        height: '75%',
     },
     footer: {
         flex: 1,
+        alignItems: "center",
         justifyContent: 'space-around',
         flexDirection: 'row',
-        padding: 25,
+        height: 10,
         backgroundColor: '#000',
     },
     footerTab: {
