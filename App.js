@@ -3,9 +3,13 @@ import { NativeRouter, Route, Routes } from "react-router-native";
 import { Signin } from "./pages/signin";
 import { Home } from "./pages/home"
 import { useFonts } from 'expo-font';
-import WelcomePage from "./pages/welcomepage";
+import { Explore } from './pages/explore';
 
 export default function App() {
+
+  const [fontsLoaded] = useFonts({
+      'Arvo Bold': require("./assets/fonts/Arvo-Bold.ttf"),
+  });
 
   return (
     <View style={styles.container}>
@@ -13,6 +17,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Signin />} />
           <Route path="/home" element={<Home />} />
+          <Route path="/explore" element={<Explore />} />
         </Routes>
       </NativeRouter>
     </View>

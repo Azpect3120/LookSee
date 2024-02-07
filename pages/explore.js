@@ -1,21 +1,17 @@
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View, StatusBar } from 'react-native';
+import { StyleSheet, View, StatusBar } from 'react-native';
 import { useLocation, useNavigate } from 'react-router-native';
-import { useFonts } from 'expo-font'
 import NavBar from './components/NavBar'
 
-export const Home = () => {
+export const Explore = () => {
     
     const navigate = useNavigate();
     const location = useLocation();
     
     return (
         <>
-            <StatusBar barStyle='light-content' />
+            <StatusBar barStyle='dark-content' />
             <View style={styles.container}>
-                <TouchableOpacity onPress={() => navigate('/')}>
-                    <Text style={styles.header}>LookSee!</Text>
-                </TouchableOpacity>
                 <View style={styles.content}>
 
                 </View>
@@ -30,20 +26,6 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
     },
-    header: {
-        backgroundColor: '#000',
-        paddingTop: 65,
-        paddingLeft: 20,
-        paddingBottom: 15,
-        width: 400,
-        color: '#fff',
-        textAlign: 'left',
-        fontSize: 35,
-        fontFamily: 'Arvo Bold',
-    },
-    content: {
-        height:0,
-    },
     footer: {
         flex: 1,
         justifyContent: 'space-around',
@@ -53,6 +35,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         bottom: 0,
         width: "105%",
+        left: "-50%",
     },
     footerTab: {
         fontSize: 25,
