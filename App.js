@@ -12,6 +12,7 @@ export default function App() {
 
   const [fontsLoaded] = useFonts({
       'Arvo Bold': require("./assets/fonts/Arvo-Bold.ttf"),
+      'Arvo': require("./assets/fonts/Arvo-Regular.ttf"),
   });
 
   return (

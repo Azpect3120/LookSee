@@ -13,7 +13,7 @@ export const Home = () => {
         <>
             <View style={styles.container}>
                 <View style={styles.content}>
-
+                    
                 </View>
                 <NavBar footerStyle={styles.footer} footerTabStyle={styles.footerTab} selected={styles.selected} />
             </View>
