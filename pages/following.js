@@ -3,7 +3,7 @@ import { StyleSheet, View, StatusBar } from 'react-native';
 import { useLocation, useNavigate } from 'react-router-native';
 import NavBar from './components/NavBar'
 
-export const Explore = () => {
+export const Following = () => {
     
     const navigate = useNavigate();
     const location = useLocation();
@@ -23,19 +23,20 @@ export const Explore = () => {
 
 const styles = StyleSheet.create({
     container: {
+        width: '100%',
         flex: 1,
         backgroundColor: '#fff',
     },
     footer: {
         flex: 1,
+        alignItems: "center",
         justifyContent: 'space-around',
         flexDirection: 'row',
-        padding: 25,
+        height: "12%",
         backgroundColor: '#000',
         position: 'absolute',
         bottom: 0,
-        width: "105%",
-        left: "-50%",
+        width: "100%",
     },
     footerTab: {
         fontSize: 25,

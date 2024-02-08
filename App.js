@@ -3,7 +3,10 @@ import { NativeRouter, Route, Routes } from "react-router-native";
 import { Signin } from "./pages/signin";
 import { Home } from "./pages/home"
 import { useFonts } from 'expo-font';
-import { Explore } from './pages/explore';
+import { Following } from './pages/following';
+import { Create } from './pages/create';
+import { Inbox } from './pages/inbox';
+import { Profile } from './pages/profile';
 
 export default function App() {
 
@@ -17,7 +20,10 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Signin />} />
           <Route path="/home" element={<Home />} />
-          <Route path="/explore" element={<Explore />} />
+          <Route path="/following" element={<Following />} />
+          <Route path="/create" element={<Create />} />
+          <Route path="/inbox" element={<Inbox />} />
+          <Route path="/profile" element={<Profile />} />
         </Routes>
       </NativeRouter>
     </View>
