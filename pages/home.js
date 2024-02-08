@@ -42,19 +42,17 @@ const styles = StyleSheet.create({
         fontSize: 35,
         fontFamily: 'Arvo Bold',
     },
-    content: {
-        height:0,
-    },
+
     footer: {
         flex: 1,
         alignItems: "center",
         justifyContent: 'space-around',
         flexDirection: 'row',
-        height: 10,
+        height: "12%",
         backgroundColor: '#000',
         position: 'absolute',
         bottom: 0,
-        width: "105%",
+        width: "100%",
     },
     footerTab: {
         fontSize: 25,
