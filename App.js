@@ -4,6 +4,7 @@ import { Signin } from "./pages/signin";
 import { Home } from "./pages/home"
 import { useFonts } from 'expo-font';
 import { Explore } from './pages/explore';
+import NavBar from "./pages/components/NavBar";
 
 export default function App() {
 

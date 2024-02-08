@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View, StatusBar } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useLocation, useNavigate } from 'react-router-native';
 import { useFonts } from 'expo-font'
 import NavBar from './components/NavBar'
@@ -12,9 +12,6 @@ export const Home = () => {
     return (
         <>
             <View style={styles.container}>
-                <TouchableOpacity onPress={() => navigate('/')}>
-                    <Text style={styles.header}>LookSee!</Text>
-                </TouchableOpacity>
                 <View style={styles.content}>
 
                 </View>
