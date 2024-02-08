@@ -46,7 +46,4 @@ const styles = StyleSheet.create({
         marginBottom: 20,
         borderRadius: 15,
     },
-    selected: {
-        backgroundColor: 'red',
-    }
 })
