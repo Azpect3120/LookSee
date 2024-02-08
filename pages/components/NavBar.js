@@ -13,19 +13,19 @@ const NavBar = ({ footerStyle, footerTabStyle, selected }) => {
     return (
         <View style={footerStyle}>
             <TouchableOpacity onPress={() => handleNavigate("/home")}>
-                <Text style={(location.pathname == "/home") ? [footerTabStyle, selected] : footerTabStyle}>H</Text>
+                <Text style={(location.pathname == "/home") ? [footerTabStyle, selected] : footerTabStyle}>👀</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => handleNavigate("/following")}>
-                <Text style={(location.pathname == "/following") ? [footerTabStyle, selected] : footerTabStyle}>F</Text>
+                <Text style={(location.pathname == "/following") ? [footerTabStyle, selected] : footerTabStyle}>🧑‍🤝‍🧑</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => handleNavigate("/create")}>
-                <Text style={(location.pathname == "/create") ? [footerTabStyle, selected] : footerTabStyle}>+</Text>
+                <Text style={(location.pathname == "/create") ? [footerTabStyle, selected] : footerTabStyle}>➕</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => handleNavigate("/inbox")}>
-                <Text style={(location.pathname == "/inbox") ? [footerTabStyle, selected] : footerTabStyle}>I</Text>
+                <Text style={(location.pathname == "/inbox") ? [footerTabStyle, selected] : footerTabStyle}>ℹ️</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => handleNavigate("/profile")}>
-                <Text style={(location.pathname == "/profile") ? [footerTabStyle, selected] : footerTabStyle}>P</Text>
+                <Text style={(location.pathname == "/profile") ? [footerTabStyle, selected] : footerTabStyle}>👤</Text>
             </TouchableOpacity>
         </View>
     )
