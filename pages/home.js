@@ -17,7 +17,7 @@ export const Home = () => {
     ];
 
     const navigate = useNavigate();
-
+    
     const onViewableItemsChanged = useRef(({ viewableItems }) => {
         if (viewableItems.length > 0) {
             const currentItem = viewableItems[0].item;

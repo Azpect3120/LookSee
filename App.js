@@ -19,8 +19,7 @@ export default function App() {
     <View style={styles.container}>
       <NativeRouter>
         <Routes>
-          <Route path="/" element={<Signin />} />
-          <Route path="/home" element={<Home />} />
+          <Route path="/" element={<Home />} />
           <Route path="/following" element={<Following />} />
           <Route path="/create" element={<Create />} />
           <Route path="/inbox" element={<Inbox />} />
