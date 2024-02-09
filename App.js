@@ -1,6 +1,5 @@
 import { StyleSheet, View } from "react-native";
 import { NativeRouter, Route, Routes } from "react-router-native";
-import { Signin } from "./pages/signin";
 import { Home } from "./pages/home"
 import { useFonts } from 'expo-font';
 import { Following } from './pages/following';
