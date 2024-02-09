@@ -47,6 +47,11 @@ func main() {
 	//
 	// POST `/posts`
 	// Creates a new post
+	// Name of the file uploaded should be `video_upload`
+	// Fields:
+	//	author string
+	//	title string
+	//	text_content string
 	server.NewEndpoint(s, "GET", "/posts", func(w http.ResponseWriter, r *http.Request) {
 		switch r.Method {
 		case http.MethodGet:
