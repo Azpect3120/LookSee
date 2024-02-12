@@ -34,7 +34,7 @@ export default function App() {
   }, [fontsLoaded]);
 
   if (!isAppReady) {
-    return null; // or render a loading indicator if desired
+    return null; 
   }
 
   return (
