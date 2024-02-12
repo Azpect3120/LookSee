@@ -1,6 +1,4 @@
 
-import { StyleSheet, View } from "react-native";
-import { useFonts } from 'expo-font';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { NativeRouter, Route, Routes } from 'react-router-native';
