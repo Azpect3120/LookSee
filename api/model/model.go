@@ -27,16 +27,22 @@ type Upload struct {
 	ID       string
 	FolderID string
 	MediaID  string
+	MssPath  string
 	Created  time.Time
 }
 
 type Post struct {
-	ID          string
-	Author      string
-	Title       string
-	Upload      Upload
-	TextContent string
-	Created     time.Time
+	ID          string    `json:"id"`
+	Author      string    `json:"author"`
+	Title       string    `json:"title"`
+	Upload      Upload    `json:"upload"`
+	TextContent string    `json:"text_content"`
+	Created     time.Time `json:"created"`
+}
+
+type CreatePostResponse struct {
+	Status int   `json:"status"`
+	Post   *Post `json:"post"`
 }
 
 type MSSResponse struct {

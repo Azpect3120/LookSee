@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS uploads (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4() UNIQUE,
     mss_folder_id UUID,
     mss_media_id UUID UNIQUE,
+    mss_path TEXT,
     created TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -20,3 +21,9 @@ CREATE TABLE IF NOT EXISTS posts (
     text_content TEXT,
     created TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+-- @block
+SELECT posts.*, uploads.*
+FROM posts INNER JOIN uploads on posts.video_content = uploads.id
+ORDER BY posts.created DESC
+OFFSET 0 LIMIT 5;
