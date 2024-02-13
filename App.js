@@ -1,7 +1,7 @@
+
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { NativeRouter, Route, Routes } from 'react-router-native';
-import { Signin } from './pages/signin';
 import { Home } from './pages/home';
 import { Following } from './pages/following';
 import { Create } from './pages/create';
@@ -32,15 +32,14 @@ export default function App() {
   }, [fontsLoaded]);
 
   if (!isAppReady) {
-    return null; // or render a loading indicator if desired
+    return null; 
   }
 
   return (
     <View style={styles.container}>
       <NativeRouter>
         <Routes>
-          <Route path="/" element={<Signin />} />
-          <Route path="/home" element={<Home />} />
+          <Route path="/" element={<Home />} />
           <Route path="/following" element={<Following />} />
           <Route path="/create" element={<Create />} />
           <Route path="/inbox" element={<Inbox />} />
