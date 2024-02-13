@@ -1,37 +1,58 @@
-import React, { useState } from 'react';
-import { StyleSheet, View, Text, TextInput, TouchableOpacity, StatusBar } from 'react-native';
-import * as ImagePicker from 'expo-image-picker';
-import * as FileSystem from 'expo-file-system';
-import { useNavigate } from 'react-router-native';
-import NavBar from './components/NavBar';
+import React, { useState } from "react";
+import {
+  StyleSheet,
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StatusBar,
+  Alert,
+} from "react-native";
+import * as ImagePicker from "expo-image-picker";
+import * as FileSystem from "expo-file-system";
+import { useNavigate } from "react-router-native";
+import NavBar from "./components/NavBar";
 
 export const Create = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    title: '',
-    description: '',
-    location: '',
+    title: "",
+    description: "",
+    location: "",
     file: null,
-    type: '',
+    type: "",
   });
 
   const pickMedia = async () => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status !== 'granted') {
+      alert('Sorry, we need media library permissions to make this work!');
+      return;
+    }
+  
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Videos,
       allowsEditing: true,
       aspect: [4, 3],
       quality: 1,
       videoMaxDuration: 60,
-    });
-
-    if (!result.cancelled) {
-      const fileInfo = await FileSystem.getInfoAsync(result.uri);
-      if (fileInfo.size <= 52428800) { 
-        setFormData({ ...formData, file: result.uri, type: result.type });
-      } else {
-        alert("File size exceeds 50MB. Please select a smaller file.");
+    }); 
+    if (!result.canceled && result.assets[0].uri) {
+      try {
+        console.log(`Fetching info for URI: ${result.assets[0].uri}`);
+        const fileInfo = await FileSystem.getInfoAsync(result.assets[0].uri);
+        if (fileInfo.size <= 52428800) { 
+          setFormData({ ...formData, file: result.assets[0].uri, type: "video" });
+        } else {
+          Alert.alert("File size exceeds 50MB. Please select a smaller file.");
+        }
+      } catch (error) {
+        console.error(`Error getting file info: ${error}`);
+        Alert.alert("Error", "Failed to get file information.");
       }
-    }
+    } else {
+      Alert.alert("Error", "No video was selected or the video URI is unavailable.");
+    }    
   };
 
   const handleInputChange = (name, value) => {
@@ -39,36 +60,33 @@ export const Create = () => {
   };
 
   const handleSubmit = async () => {
-    const backendURL = 'backend-link';
+    const backendURL = "https://www.gophernest.net/posts";
     let localUri = formData.file;
-    let filename = localUri.split('/').pop();
-    let match = /\.(\w+)$/.exec(filename);
-    let type = match ? `${formData.type}/${match[1]}` : formData.type;
+    let filename = localUri.split("/").pop();
+    let type = `video/${filename.split('.').pop()}`;
 
     let formDataBackend = new FormData();
-    formDataBackend.append('title', formData.title);
-    formDataBackend.append('description', formData.description);
-    formDataBackend.append('location', formData.location);
-    formDataBackend.append('file', { uri: localUri, name: filename, type });
+    formDataBackend.append("title", formData.title);
+    formDataBackend.append("text_content", `${formData.location} ${formData.description}`);
+    formDataBackend.append("video_upload", { uri: localUri, name: filename, type });
 
     try {
       let response = await fetch(backendURL, {
-        method: 'POST',
+        method: "POST",
         body: formDataBackend,
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
       });
       if (response.ok) {
-        console.log('Form submitted successfully');
-        navigate('/success');
+        Alert.alert("Form submitted successfully");
+        navigate("/success");
       } else {
-        console.error('Form submission failed');
+        Alert.alert("Form submission failed", `Status Code: ${response.status}`);
       }
     } catch (error) {
-      console.error('Submission error:', error);
+      console.error("Submission error:", error);
+      Alert.alert("Submission error", error.message);
     }
   };
+
 
   return (
     <>
@@ -80,19 +98,19 @@ export const Create = () => {
           </TouchableOpacity>
           <TextInput
             style={styles.input}
-            onChangeText={(text) => handleInputChange('title', text)}
+            onChangeText={(text) => handleInputChange("title", text)}
             value={formData.title}
             placeholder="Enter a Title"
           />
           <TextInput
             style={styles.input}
-            onChangeText={(text) => handleInputChange('description', text)}
+            onChangeText={(text) => handleInputChange("description", text)}
             value={formData.description}
             placeholder="Description"
           />
           <TextInput
             style={styles.input}
-            onChangeText={(text) => handleInputChange('location', text)}
+            onChangeText={(text) => handleInputChange("location", text)}
             value={formData.location}
             placeholder="Enter A Location"
           />
