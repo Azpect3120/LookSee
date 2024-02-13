@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigate, useLocation } from 'react-router-native';
+import { FontAwesome, MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 
 const NavBar = () => {
     const navigate = useNavigate();
@@ -13,10 +14,10 @@ const NavBar = () => {
     return (
         <View style={styles.footer}>
             <TouchableOpacity style={styles.button} onPress={() => handleNavigate("/")}>
-                <Text style={[styles.tab, location.pathname === "/" && styles.selected]}>👀</Text>
+                <FontAwesome style={styles.tab} name="home" color={(location.pathname === "/") ? "#007BFF" : "black"} />
             </TouchableOpacity>
             <TouchableOpacity style={styles.button} onPress={() => handleNavigate("/following")}>
-                <Text style={[styles.tab, location.pathname === "/following" && styles.selected]}>🧑‍🤝‍🧑</Text>
+                <MaterialIcons style={styles.tab} name="explore" color={(location.pathname === "/following") ? "#007BFF" : "black"} />
             </TouchableOpacity>
             <TouchableOpacity style={[styles.button, styles.plus]} onPress={() => handleNavigate("/create")}>
                 <View style={[styles.circle, location.pathname === "/create" && styles.selectedCircle]}>
@@ -24,10 +25,10 @@ const NavBar = () => {
                 </View>
             </TouchableOpacity>
             <TouchableOpacity style={styles.button} onPress={() => handleNavigate("/inbox")}>
-                <Text style={[styles.tab,  location.pathname === "/inbox" && styles.selected]}>ℹ️</Text>
+                <FontAwesome style={styles.tab} name="inbox" color={(location.pathname === "/inbox") ? "#007BFF" : "black"} />
             </TouchableOpacity>
             <TouchableOpacity style={styles.button} onPress={() => handleNavigate("/profile")}>
-                <Text style={[styles.tab, location.pathname === "/profile" && styles.selected]}>👤</Text>
+                <MaterialCommunityIcons style={styles.tab} name="account" color={(location.pathname === "/profile") ? "#007BFF" : "black"} />
             </TouchableOpacity>
         </View>
     );
@@ -77,11 +78,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#007BFF', 
     },
     tab: {
-        fontSize: 24,
-    },
-    selected: {
-        color: 'white', 
-    },
+        fontSize: 28,
+    }
 });
 
 export default NavBar;
