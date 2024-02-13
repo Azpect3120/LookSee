@@ -78,9 +78,33 @@ func GetPostById(w http.ResponseWriter, r *http.Request, s *model.Server) {
 	vars := mux.Vars(r)
 	id := vars["id"]
 
+	// Validate UUID
+	if uuid.Validate(id) != nil {
+		http.Error(w, "Invalid ID provided.", http.StatusBadRequest)
+		Log(r, http.StatusBadRequest)
+		return
+	}
+
+	// Get post from database
+	post, err := database.GetPostById(s.Database, id)
+	if err != nil {
+		http.Error(w, "Error getting post.", http.StatusInternalServerError)
+		Log(r, http.StatusInternalServerError)
+		return
+	}
+
+	// Encode post to JSON
+	json, err := json.Marshal(post)
+	if err != nil {
+		http.Error(w, "Error encoding response.", http.StatusInternalServerError)
+		Log(r, http.StatusInternalServerError)
+		return
+	}
+
 	// Send response
-	w.WriteHeader(http.StatusOK)
-	w.Write([]byte(fmt.Sprintf("ID Provided: %s", id)))
+	w.WriteHeader(http.StatusCreated)
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(json)
 
 	// Log to console
 	Log(r, http.StatusOK)

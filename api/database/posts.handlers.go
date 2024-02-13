@@ -116,6 +116,40 @@ func GetPosts(db *model.Database, count, page int) ([]*model.Post, error) {
 
 }
 
-func GetPostById(db *model.Database, id string) {
+// Get a post from the database via the ID
+func GetPostById(db *model.Database, id string) (*model.Post, error) {
+	// Create SQL statement
+	stmt, err := db.Conn.Prepare(`
+		SELECT posts.*, uploads.*
+		FROM posts INNER JOIN uploads on posts.video_content = uploads.id
+		WHERE posts.id = $1;
+	`)
+	if err != nil {
+		return &model.Post{}, err
+	}
+	defer stmt.Close()
 
+	// Create upload object
+	p := &model.Post{Upload: model.Upload{}}
+
+	// Execute statement
+	err = stmt.QueryRow(id).Scan(
+		&p.ID,
+		&p.Author,
+		&p.Title,
+		&p.Upload.ID,
+		&p.TextContent,
+		&p.Created,
+		&p.Upload.ID,
+		&p.Upload.FolderID,
+		&p.Upload.MediaID,
+		&p.Upload.MssPath,
+		&p.Upload.Created,
+	)
+	if err != nil {
+		return &model.Post{}, err
+	}
+
+	// Return upload object
+	return p, nil
 }

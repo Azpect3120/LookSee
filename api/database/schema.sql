@@ -27,3 +27,8 @@ SELECT posts.*, uploads.*
 FROM posts INNER JOIN uploads on posts.video_content = uploads.id
 ORDER BY posts.created DESC
 OFFSET 0 LIMIT 5;
+
+-- @block
+SELECT posts.*, uploads.*
+FROM posts INNER JOIN uploads on posts.video_content = uploads.id
+WHERE posts.id = 'da175d69-d2f8-4b6f-8d54-8d9278f6e216';
