@@ -16,7 +16,7 @@ type User struct {
 const CONN_STRING string = "postgres://sthrthra:npQWeHYhjir04iXWNaCbRujOsGohMKRV@kashin.db.elephantsql.com/sthrthra"
 
 func main() {
-	s, err := server.Create(3001, CONN_STRING)
+	s, err := server.Create(3002, CONN_STRING)
 	if err != nil {
 		println(err.Error())
 	}
