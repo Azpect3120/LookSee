@@ -13,7 +13,7 @@ const NavBar = () => {
     return (
         <View style={styles.footer}>
             <TouchableOpacity style={styles.button} onPress={() => handleNavigate("/home")}>
-                <Text style={[styles.tab, location.pathname === "/home" && styles.selected]}>👀</Text>
+                <Text style={[styles.tab, location.pathname === "/home" && styles.selected]}>H</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.button} onPress={() => handleNavigate("/following")}>
                 <Text style={[styles.tab, location.pathname === "/following" && styles.selected]}>🧑‍🤝‍🧑</Text>
