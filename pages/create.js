@@ -24,7 +24,7 @@ export const Create = () => {
       videoMaxDuration: 60,
     });
 
-    if (!result.cancelled) {
+    if (!result.canceled) {
       const fileInfo = await FileSystem.getInfoAsync(result.uri);
       if (fileInfo.size <= 52428800) { 
         setFormData({ ...formData, file: result.uri, type: result.type });
