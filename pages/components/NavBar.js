@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigate, useLocation } from 'react-router-native';
-import { FontAwesome, MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { FontAwesome, MaterialIcons, MaterialCommunityIcons, Entypo } from '@expo/vector-icons';
 
 const NavBar = () => {
     const navigate = useNavigate();
@@ -21,7 +21,7 @@ const NavBar = () => {
             </TouchableOpacity>
             <TouchableOpacity style={[styles.button, styles.plus]} onPress={() => handleNavigate("/create")}>
                 <View style={[styles.circle, location.pathname === "/create" && styles.selectedCircle]}>
-                    <Text style={[styles.tab, location.pathname === "/create" && styles.selected]}>➕</Text>
+                    <Entypo style={[styles.tab, location.pathname === "/create" && styles.selected]} name="plus" size={24} color="black" />
                 </View>
             </TouchableOpacity>
             <TouchableOpacity style={styles.button} onPress={() => handleNavigate("/inbox")}>
