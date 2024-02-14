@@ -7,10 +7,14 @@ export const Profile = () => {
     
     const navigate = useNavigate();
     const location = useLocation();
+
+    const handlePress = url => {
+        navigate(url);
+    }
     
     return (
         <>
-            <StatusBar barStyle='light-content' />
+            <StatusBar barStyle='dark-content' />
             <View style={styles.container}>
                 <View style={styles.profileInfo}>
                     <Text style={styles.accountName}>Account Name</Text>
@@ -19,8 +23,8 @@ export const Profile = () => {
                         <TouchableOpacity style={styles.button}>
                             <Text style={styles.text}>Edit Profile</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={styles.button}>
-                            <Text style={styles.text}>Settings</Text>
+                        <TouchableOpacity style={styles.button} onPress={() => handlePress('/login')}>
+                            <Text style={styles.text}>Log In/Out</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
