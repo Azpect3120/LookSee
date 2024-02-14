@@ -89,6 +89,7 @@ func GetPostById(w http.ResponseWriter, r *http.Request, s *model.Server) {
 	// Get post from database
 	post, err := database.GetPostById(s.Database, id)
 	if err != nil {
+		println(err.Error())
 		http.Error(w, "Error getting post.", http.StatusInternalServerError)
 		Log(r, http.StatusInternalServerError)
 		return
@@ -113,25 +114,6 @@ func GetPostById(w http.ResponseWriter, r *http.Request, s *model.Server) {
 
 // Creates a post in the database
 // Data should be sent in the form
-// e.g. Response:
-//
-//	{
-//	  "status": 201,
-//	  "post": {
-//	    "ID": "bf0630b7-875f-4312-a74c-3a3b2e98ae67",
-//	    "Author": "hayden",
-//	    "Title": "I promise this place is good\n",
-//	    "Upload": {
-//	      "ID": "d512ab7f-d944-49dd-99e2-19541a756b9c",
-//	      "FolderID": "e8c730cc-687c-40fc-bd3f-babfe91ebe64",
-//	      "MediaID": "2d0005e4-1044-47f1-a066-5ce1e08af606",
-//	      "MssPath": "/uploads/e8c730cc-687c-40fc-bd3f-babfe91ebe64/2d0005e4-1044-47f1-a066-5ce1e08af606.mp4",
-//	      "Created": "2024-02-13T19:08:17.299403Z"
-//	    },
-//	    "TextContent": "go here broski",
-//	    "Created": "2024-02-13T19:08:17.414022Z"
-//	  }
-//	}
 func CreatePost(w http.ResponseWriter, r *http.Request, s *model.Server) {
 	// Parse the multipart form data
 	err := r.ParseMultipartForm(50 << 20) // 50 MB

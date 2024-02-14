@@ -104,8 +104,24 @@ func GetPosts(db *model.Database, count, page int) ([]*model.Post, error) {
 
 	// Create SQL statement
 	stmt, err := db.Conn.Prepare(`
-		SELECT posts.*, uploads.*
+		SELECT 
+			posts.id as p_id,
+			posts.author,
+			posts.title,
+			posts.video_content,
+			posts.text_content,
+			posts.created as p_created,
+			uploads.id as upload_id,
+			uploads.mss_folder_id,
+			uploads.mss_media_id,
+			uploads.mss_path,
+			uploads.created as upload_created,
+			users.id as user_id,
+			users.username,
+			users.password,
+			users.created as user_created
 		FROM posts INNER JOIN uploads on posts.video_content = uploads.id
+		INNER JOIN users ON posts.author = users.id
 		ORDER BY posts.created DESC
 		OFFSET $1 LIMIT $2;
 	`)
@@ -129,9 +145,10 @@ func GetPosts(db *model.Database, count, page int) ([]*model.Post, error) {
 	for rows.Next() {
 		post := &model.Post{}
 		upload := &model.Upload{}
+		user := &model.User{}
 		rows.Scan(
 			&post.ID,
-			&post.Author,
+			&post.Author.ID,
 			&post.Title,
 			&post.Upload.ID,
 			&post.TextContent,
@@ -141,8 +158,13 @@ func GetPosts(db *model.Database, count, page int) ([]*model.Post, error) {
 			&upload.MediaID,
 			&upload.MssPath,
 			&upload.Created,
+			&user.ID,
+			&user.Username,
+			&user.Password,
+			&user.Created,
 		)
 		post.Upload = *upload
+		post.Author = *user
 		p = append(p, post)
 	}
 
@@ -155,36 +177,55 @@ func GetPosts(db *model.Database, count, page int) ([]*model.Post, error) {
 func GetPostById(db *model.Database, id string) (*model.Post, error) {
 	// Create SQL statement
 	stmt, err := db.Conn.Prepare(`
-		SELECT posts.*, uploads.*
+		SELECT 
+			posts.id as p_id,
+			posts.author,
+			posts.title,
+			posts.video_content,
+			posts.text_content,
+			posts.created as p_created,
+			uploads.id as upload_id,
+			uploads.mss_folder_id,
+			uploads.mss_media_id,
+			uploads.mss_path,
+			uploads.created as upload_created,
+			users.id as user_id,
+			users.username,
+			users.password,
+			users.created as user_created
 		FROM posts INNER JOIN uploads on posts.video_content = uploads.id
-		WHERE posts.id = $1;
-	`)
+		INNER JOIN users ON posts.author = users.id
+		WHERE posts.id = $1;`)
 	if err != nil {
 		return &model.Post{}, err
 	}
 	defer stmt.Close()
 
 	// Create upload object
-	p := &model.Post{Upload: model.Upload{}}
+	post := &model.Post{Upload: model.Upload{}, Author: model.User{}}
 
 	// Execute statement
 	err = stmt.QueryRow(id).Scan(
-		&p.ID,
-		&p.Author,
-		&p.Title,
-		&p.Upload.ID,
-		&p.TextContent,
-		&p.Created,
-		&p.Upload.ID,
-		&p.Upload.FolderID,
-		&p.Upload.MediaID,
-		&p.Upload.MssPath,
-		&p.Upload.Created,
+		&post.ID,
+		&post.Author.ID,
+		&post.Title,
+		&post.Upload.ID,
+		&post.TextContent,
+		&post.Created,
+		&post.Upload.ID,
+		&post.Upload.FolderID,
+		&post.Upload.MediaID,
+		&post.Upload.MssPath,
+		&post.Upload.Created,
+		&post.Author.ID,
+		&post.Author.Username,
+		&post.Author.Password,
+		&post.Author.Created,
 	)
 	if err != nil {
 		return &model.Post{}, err
 	}
 
 	// Return upload object
-	return p, nil
+	return post, nil
 }

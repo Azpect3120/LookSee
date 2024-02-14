@@ -49,15 +49,52 @@ CREATE TABLE IF NOT EXISTS comments (
 );
 
 -- @block
-SELECT posts.*, uploads.*
+SELECT 
+    posts.id as p_id,
+    posts.author,
+    posts.title,
+    posts.video_content,
+    posts.text_content,
+    posts.created as p_created,
+    uploads.id as upload_id,
+    uploads.mss_folder_id,
+    uploads.mss_media_id,
+    uploads.mss_path,
+    uploads.created as upload_created,
+    users.id as user_id,
+    users.username,
+    users.password,
+    users.created as user_created
 FROM posts INNER JOIN uploads on posts.video_content = uploads.id
+INNER JOIN users ON posts.author = users.id
 ORDER BY posts.created DESC
-OFFSET 0 LIMIT 5;
+OFFSET 0 LIMIT 1;
 
 -- @block
 SELECT posts.*, uploads.*
 FROM posts INNER JOIN uploads on posts.video_content = uploads.id
 WHERE posts.id = 'da175d69-d2f8-4b6f-8d54-8d9278f6e216';
+
+-- @block
+SELECT posts.id as p_id,
+    posts.author,
+    posts.title,
+    posts.video_content,
+    posts.text_content,
+    posts.created as p_created,
+    uploads.id as upload_id,
+    uploads.mss_folder_id,
+    uploads.mss_media_id,
+    uploads.mss_path,
+    uploads.created as upload_created,
+    users.id as user_id,
+    users.username,
+    users.password,
+    users.created as user_created
+FROM posts
+    INNER JOIN uploads on posts.video_content = uploads.id
+    INNER JOIN users ON posts.author = users.id
+WHERE posts.id = 'c8c83e19-25a1-4c9f-ab72-6a1672549d12';
 
 -- @block
 SELECT * FROM users;
