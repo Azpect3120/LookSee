@@ -66,6 +66,7 @@ func GetPosts(w http.ResponseWriter, r *http.Request, s *model.Server) {
 	Log(r, http.StatusOK)
 }
 
+// Returns an array via its ID
 func GetPostById(w http.ResponseWriter, r *http.Request, s *model.Server) {
 	// Ensure method is GET
 	if r.Method != http.MethodGet {
@@ -153,8 +154,7 @@ func CreatePost(w http.ResponseWriter, r *http.Request, s *model.Server) {
 	var requestBody bytes.Buffer
 	writer := multipart.NewWriter(&requestBody)
 
-	// Get the name of the file somehow???
-	// MUST INCLUDE EXT
+	// Get the name of the file uploaded
 	var filename string = header.Filename
 
 	// Create a form field for the file
@@ -220,14 +220,16 @@ func CreatePost(w http.ResponseWriter, r *http.Request, s *model.Server) {
 	}
 
 	// Get data from user input
+	// Get user from session
+	// FOR NOW: UUID is copied front DB
 	var (
-		author       string = r.FormValue("author")
+		user_id      string = "442e6b5a-ac9e-453e-8a9d-a052df9c169c"
 		title        string = r.FormValue("title")
 		text_content string = r.FormValue("text_content")
 	)
 
 	// Create post in database
-	post, err := database.CreatePost(s.Database, uuid.NewString(), author, title, text_content, upload, time.Now().UTC())
+	post, err := database.CreatePost(s.Database, uuid.NewString(), user_id, title, text_content, upload, time.Now().UTC())
 	if err != nil {
 		println(err.Error())
 		http.Error(w, "Error creating post in database", http.StatusInternalServerError)

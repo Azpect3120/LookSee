@@ -51,3 +51,7 @@ func LoginWithName(w http.ResponseWriter, r *http.Request, s *model.Server) {
 	// Log to console
 	Log(r, http.StatusOK)
 }
+
+func CreateUser(w http.ResponseWriter, r *http.Request, s *model.Server) {
+
+}

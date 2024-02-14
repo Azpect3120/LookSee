@@ -15,25 +15,32 @@ type Database struct {
 }
 
 type Server struct {
-	Router *mux.Router
-	Port   int
-	// Array will store [ "/endpoint", "METHOD" ]
-	Endpoints map[[2]string]func(http.ResponseWriter, *http.Request)
+	Router    *mux.Router
+	Port      int
+	Endpoints map[string]func(http.ResponseWriter, *http.Request)
 	Database  *Database
 	Session   *sessions.Session
 }
 
+type User struct {
+	ID       string    `json:"id"`
+	Username string    `json:"username"`
+	Password string    `json:"password"`
+	Likes    []string  `json:"likes"`
+	Created  time.Time `json:"created"`
+}
+
 type Upload struct {
-	ID       string
-	FolderID string
-	MediaID  string
-	MssPath  string
-	Created  time.Time
+	ID       string    `json:"id"`
+	FolderID string    `json:"folderid"`
+	MediaID  string    `json:"mediaid"`
+	MssPath  string    `json:"msspath"`
+	Created  time.Time `json:"created"`
 }
 
 type Post struct {
 	ID          string    `json:"id"`
-	Author      string    `json:"author"`
+	Author      User      `json:"author"`
 	Title       string    `json:"title"`
 	Upload      Upload    `json:"upload"`
 	TextContent string    `json:"text_content"`

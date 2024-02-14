@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/Azpect3120/LookSee/api/model"
+	"github.com/google/uuid"
 )
 
 // Create an upload in the database.
@@ -41,10 +42,24 @@ func CreateUpload(db *model.Database, id, mssFolderID, mssMediaID, mssPath strin
 func CreatePost(db *model.Database, id, author, title, textContent string, upload *model.Upload, created time.Time) (*model.Post, error) {
 	// Create SQL statement
 	stmt, err := db.Conn.Prepare(
-		`INSERT INTO 
-		posts (id, author, title, video_content, text_content, created) 
-		VALUES ($1, $2, $3, $4, $5, $6) 
-		RETURNING id, author, title, text_content, created;`)
+		`WITH inserted_post AS (
+			INSERT INTO posts (id, author, title, video_content, text_content, created) 
+			VALUES  ($1, $2, $3, $4, $5, $6) 
+			RETURNING *
+		)
+		SELECT 
+			p.id AS post_id,
+			p.title AS post_title,
+			p.text_content AS post_text_content,
+			p.created AS post_created,
+			u.id AS user_id, 
+			u.username, 
+			u.password,
+			u.likes,
+			u.created 	
+		FROM 
+		inserted_post p 
+		JOIN users u ON p.author = u.id;`)
 	if err != nil {
 		return &model.Post{}, err
 	}
@@ -52,10 +67,30 @@ func CreatePost(db *model.Database, id, author, title, textContent string, uploa
 
 	// Create upload object
 	var p *model.Post = &model.Post{Upload: *upload}
+	var likes []byte
 
 	// Execute statement
-	if err := stmt.QueryRow(id, author, title, upload.ID, textContent, created).Scan(&p.ID, &p.Author, &p.Title, &p.TextContent, &p.Created); err != nil {
+	if err := stmt.QueryRow(id, author, title, upload.ID, textContent, created).Scan(
+		&p.ID,
+		&p.Title,
+		&p.TextContent,
+		&p.Created,
+		&p.Author.ID,
+		&p.Author.Username,
+		&p.Author.Password,
+		&likes,
+		&p.Author.Created,
+	); err != nil {
 		return &model.Post{}, err
+	}
+
+	// Convert byte array to uuid array
+	p.Author.Likes = make([]string, 0)
+	for _, uuidBytes := range likes {
+		if uuid.Validate(string(uuidBytes)) == nil {
+			uuidString := string(uuidBytes)
+			p.Author.Likes = append(p.Author.Likes, uuidString)
+		}
 	}
 
 	// Return upload object

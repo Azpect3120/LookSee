@@ -22,7 +22,7 @@ func main() {
 	}
 
 	// Example session endpoint
-	server.NewEndpoint(s, "GET", "/session", func(w http.ResponseWriter, r *http.Request) {
+	server.NewEndpoint(s, "/session", func(w http.ResponseWriter, r *http.Request) {
 		if r.Method != http.MethodGet {
 			http.Error(w, "Method not allowed.", http.StatusMethodNotAllowed)
 			server.Log(r, http.StatusMethodNotAllowed)
@@ -38,8 +38,14 @@ func main() {
 	// POST `/login`
 	// Logs the user in with their name
 	// IS NOT SECURE, just built for MVP purposes
-	server.NewEndpoint(s, "POST", "/login", func(w http.ResponseWriter, r *http.Request) {
+	server.NewEndpoint(s, "/login", func(w http.ResponseWriter, r *http.Request) {
 		server.LoginWithName(w, r, s)
+	})
+
+	// POST `/users`
+	// Creates a user in the database
+	server.NewEndpoint(s, "/users", func(w http.ResponseWriter, r *http.Request) {
+		server.CreateUser(w, r, s)
 	})
 
 	// GET `/posts`
@@ -52,7 +58,7 @@ func main() {
 	//	author string
 	//	title string
 	//	text_content string
-	server.NewEndpoint(s, "GET", "/posts", func(w http.ResponseWriter, r *http.Request) {
+	server.NewEndpoint(s, "/posts", func(w http.ResponseWriter, r *http.Request) {
 		switch r.Method {
 		case http.MethodGet:
 			server.GetPosts(w, r, s)
@@ -66,7 +72,7 @@ func main() {
 
 	// GET `/posts/:id`
 	// Gets a post via its `id` specified in the URL
-	server.NewEndpoint(s, "GET", "/posts/{id}", func(w http.ResponseWriter, r *http.Request) {
+	server.NewEndpoint(s, "/posts/{id}", func(w http.ResponseWriter, r *http.Request) {
 		server.GetPostById(w, r, s)
 	})
 
