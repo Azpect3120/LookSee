@@ -1,4 +1,3 @@
-// WelcomePage.js
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { useLocation } from 'react-router-native';
