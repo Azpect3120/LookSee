@@ -60,7 +60,7 @@ export const Create = () => {
   };
 
   const handleSubmit = async () => {
-    const backendURL = "https://www.gophernest.net/posts";
+    const backendURL = "https://www.looksee.gophernest.net/posts";
     let localUri = formData.file;
     let filename = localUri.split("/").pop();
     let type = `video/${filename.split('.').pop()}`;
