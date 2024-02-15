@@ -5,6 +5,7 @@ import (
 
 	"github.com/Azpect3120/LookSee/api/model"
 	"github.com/google/uuid"
+	_ "github.com/lib/pq"
 )
 
 // Create an upload in the database.
@@ -97,7 +98,10 @@ func CreatePost(db *model.Database, id, author, title, textContent string, uploa
 	return p, nil
 }
 
-// Return an array of posts
+// Return an array of posts.
+// The posts are returned in order by
+// the date they were uploaded. Count
+// and page are used for pagination.
 func GetPosts(db *model.Database, count, page int) ([]*model.Post, error) {
 	// Calculate offset
 	offset := (page - 1) * count

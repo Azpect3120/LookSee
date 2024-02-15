@@ -52,6 +52,16 @@ type CreatePostResponse struct {
 	Post   *Post `json:"post"`
 }
 
+type AttemptLoginRequest struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
+}
+
+type AttemptLoginResponse struct {
+	Status  int    `json:"status"`
+	Message string `json:"message"`
+}
+
 type MSSResponse struct {
 	Image struct {
 		ID         string `json:"ID"`

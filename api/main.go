@@ -36,16 +36,8 @@ func main() {
 	})
 
 	// POST `/login`
-	// Logs the user in with their name
-	// IS NOT SECURE, just built for MVP purposes
 	server.NewEndpoint(s, "/login", func(w http.ResponseWriter, r *http.Request) {
-		server.LoginWithName(w, r, s)
-	})
-
-	// POST `/users`
-	// Creates a user in the database
-	server.NewEndpoint(s, "/users", func(w http.ResponseWriter, r *http.Request) {
-		server.CreateUser(w, r, s)
+		server.AttemptLogin(w, r, s)
 	})
 
 	// GET `/posts`

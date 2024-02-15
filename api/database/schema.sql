@@ -19,6 +19,9 @@ CREATE TABLE IF NOT EXISTS users (
 -- @block
 INSERT INTO users (username, password, likes) VALUES ('azpect', 'root', array[]::UUID[]);
 
+-- @block
+SELECT * FROM users WHERE username = 'azpect' AND password = 'root';
+
 -- Uploads table which will store each video
 -- uploaded and map it to a post.
 CREATE TABLE IF NOT EXISTS uploads (

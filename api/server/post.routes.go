@@ -118,7 +118,7 @@ func CreatePost(w http.ResponseWriter, r *http.Request, s *model.Server) {
 	// Parse the multipart form data
 	err := r.ParseMultipartForm(50 << 20) // 50 MB
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		http.Error(w, "Error parsing form.", http.StatusBadRequest)
 		Log(r, http.StatusBadRequest)
 		return
 	}
