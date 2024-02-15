@@ -1,9 +1,11 @@
 package main
 
 import (
+	"encoding/gob"
 	"fmt"
 	"net/http"
 
+	"github.com/Azpect3120/LookSee/api/model"
 	"github.com/Azpect3120/LookSee/api/server"
 )
 
@@ -14,9 +16,12 @@ type User struct {
 }
 
 const CONN_STRING string = "postgres://sthrthra:npQWeHYhjir04iXWNaCbRujOsGohMKRV@kashin.db.elephantsql.com/sthrthra"
+const SESSION_KEY string = "iruabjinajabkjabgmabgaj"
 
 func main() {
-	s, err := server.Create(3002, CONN_STRING)
+	// Register objects
+	gob.Register(model.User{})
+	s, err := server.Create(3002, CONN_STRING, SESSION_KEY)
 	if err != nil {
 		println(err.Error())
 	}
@@ -28,11 +33,14 @@ func main() {
 			server.Log(r, http.StatusMethodNotAllowed)
 			return
 		}
-		data := fmt.Sprintf("%+v", server.GetSessionData(s))
-		w.Write([]byte(data))
-
-		// Log to console
-		server.Log(r, http.StatusOK)
+		// Get session
+		d, err := s.Session.Get(r, "looksee-session")
+		if err != nil {
+			println(err.Error())
+		}
+		user, ok := d.Values["user"].(model.User)
+		println(ok)
+		w.Write([]byte(fmt.Sprintf("%+v", user)))
 	})
 
 	// POST `/login`

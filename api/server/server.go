@@ -10,19 +10,16 @@ import (
 	"github.com/gorilla/sessions"
 )
 
-const SESSION_KEY string = "iruabjinajabkjabgmabgaj"
-
-func Create(port int, connectionString string) (*model.Server, error) {
+func Create(port int, connectionString, sessionKey string) (*model.Server, error) {
 	if db, err := database.Create(connectionString); err != nil {
 		return nil, err
 	} else {
-		store := sessions.NewCookieStore([]byte(SESSION_KEY))
 		return &model.Server{
 			Router:    mux.NewRouter(),
 			Port:      port,
 			Endpoints: make(map[string]func(http.ResponseWriter, *http.Request)),
 			Database:  db,
-			Session:   sessions.NewSession(store, "session"),
+			Session:   sessions.NewCookieStore([]byte(sessionKey)),
 		}, nil
 	}
 }

@@ -19,7 +19,7 @@ type Server struct {
 	Port      int
 	Endpoints map[string]func(http.ResponseWriter, *http.Request)
 	Database  *Database
-	Session   *sessions.Session
+	Session   *sessions.CookieStore
 }
 
 type User struct {
