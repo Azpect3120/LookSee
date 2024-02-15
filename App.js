@@ -7,6 +7,7 @@ import { Following } from './pages/following';
 import { Create } from './pages/create';
 import { Inbox } from './pages/inbox';
 import { Profile } from './pages/profile';
+import { Login } from './pages/login';
 import * as SplashScreen from 'expo-splash-screen';
 import { useFonts } from 'expo-font';
 
@@ -44,6 +45,7 @@ export default function App() {
           <Route path="/create" element={<Create />} />
           <Route path="/inbox" element={<Inbox />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/login" element={<Login />} />
         </Routes>
       </NativeRouter>
     </View>
