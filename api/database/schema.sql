@@ -39,6 +39,7 @@ CREATE TABLE IF NOT EXISTS posts (
     title TEXT,
     video_content UUID REFERENCES uploads(id),
     text_content TEXT,
+    address TEXT,
     created TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

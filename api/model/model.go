@@ -40,7 +40,8 @@ type Post struct {
 	ID          string    `json:"id"`
 	Author      User      `json:"author"`
 	Title       string    `json:"title"`
-	Upload      Upload    `json:"upload"`
+  Upload      Upload    `json:"upload"`
+  Address     string    `json:"address"`
 	TextContent string    `json:"text_content"`
 	Created     time.Time `json:"created"`
 }
