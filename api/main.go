@@ -6,12 +6,6 @@ import (
 	"github.com/Azpect3120/LookSee/api/server"
 )
 
-type User struct {
-	ID       int
-	Username string
-	Password string
-}
-
 const CONN_STRING string = "postgres://sthrthra:npQWeHYhjir04iXWNaCbRujOsGohMKRV@kashin.db.elephantsql.com/sthrthra"
 
 func main() {
