@@ -55,7 +55,6 @@ func CreatePost(db *model.Database, id, author, title, textContent string, uploa
 			p.created AS post_created,
 			u.id AS user_id, 
 			u.username, 
-			u.password,
 			u.likes,
 			u.created 	
 		FROM 
@@ -78,7 +77,6 @@ func CreatePost(db *model.Database, id, author, title, textContent string, uploa
 		&p.Created,
 		&p.Author.ID,
 		&p.Author.Username,
-		&p.Author.Password,
 		&likes,
 		&p.Author.Created,
 	); err != nil {

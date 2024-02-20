@@ -44,19 +44,10 @@ func AttemptLogin(w http.ResponseWriter, r *http.Request, s *model.Server) {
 
 	// Return response
 	if valid {
-		// Add user to session
-		session, err := s.Session.Get(r, "looksee-session")
-		if err != nil {
-			println(err.Error())
-		}
-		session.Values["user"] = *user
-		if err := session.Save(r, w); err != nil {
-			println(err.Error())
-		}
-		res, err = json.Marshal(model.AttemptLoginResponse{Status: http.StatusOK, Message: "User was logged in."})
+		res, err = json.Marshal(model.AttemptLoginResponse{Status: http.StatusOK, Message: "User was logged in.", User: *user})
 		status = http.StatusOK
 	} else {
-		res, err = json.Marshal(model.AttemptLoginResponse{Status: http.StatusBadRequest, Message: "Login credentials were invalid."})
+		res, err = json.Marshal(model.AttemptLoginResponse{Status: http.StatusBadRequest, Message: "Login credentials were invalid.", User: model.User{}})
 		status = http.StatusBadRequest
 	}
 

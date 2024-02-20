@@ -1,11 +1,8 @@
 package main
 
 import (
-	"encoding/gob"
-	"fmt"
 	"net/http"
 
-	"github.com/Azpect3120/LookSee/api/model"
 	"github.com/Azpect3120/LookSee/api/server"
 )
 
@@ -16,32 +13,12 @@ type User struct {
 }
 
 const CONN_STRING string = "postgres://sthrthra:npQWeHYhjir04iXWNaCbRujOsGohMKRV@kashin.db.elephantsql.com/sthrthra"
-const SESSION_KEY string = "iruabjinajabkjabgmabgaj"
 
 func main() {
-	// Register objects
-	gob.Register(model.User{})
-	s, err := server.Create(3002, CONN_STRING, SESSION_KEY)
+	s, err := server.Create(3002, CONN_STRING)
 	if err != nil {
 		println(err.Error())
 	}
-
-	// Example session endpoint
-	server.NewEndpoint(s, "/session", func(w http.ResponseWriter, r *http.Request) {
-		if r.Method != http.MethodGet {
-			http.Error(w, "Method not allowed.", http.StatusMethodNotAllowed)
-			server.Log(r, http.StatusMethodNotAllowed)
-			return
-		}
-		// Get session
-		d, err := s.Session.Get(r, "looksee-session")
-		if err != nil {
-			println(err.Error())
-		}
-		user, ok := d.Values["user"].(model.User)
-		println(ok)
-		w.Write([]byte(fmt.Sprintf("%+v", user)))
-	})
 
 	// POST `/login`
 	server.NewEndpoint(s, "/login", func(w http.ResponseWriter, r *http.Request) {
@@ -55,7 +32,7 @@ func main() {
 	// Creates a new post
 	// Name of the file uploaded should be `video_upload`
 	// Fields:
-	//	author string
+	//	author_id string
 	//	title string
 	//	text_content string
 	server.NewEndpoint(s, "/posts", func(w http.ResponseWriter, r *http.Request) {

@@ -6,7 +6,6 @@ import (
 	"time"
 
 	"github.com/gorilla/mux"
-	"github.com/gorilla/sessions"
 )
 
 type Database struct {
@@ -19,7 +18,6 @@ type Server struct {
 	Port      int
 	Endpoints map[string]func(http.ResponseWriter, *http.Request)
 	Database  *Database
-	Session   *sessions.CookieStore
 }
 
 type User struct {
@@ -60,6 +58,7 @@ type AttemptLoginRequest struct {
 type AttemptLoginResponse struct {
 	Status  int    `json:"status"`
 	Message string `json:"message"`
+	User    User   `json:"user"`
 }
 
 type MSSResponse struct {

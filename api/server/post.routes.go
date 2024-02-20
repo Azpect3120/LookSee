@@ -205,7 +205,7 @@ func CreatePost(w http.ResponseWriter, r *http.Request, s *model.Server) {
 	// Get user from session
 	// FOR NOW: UUID is copied front DB
 	var (
-		user_id      string = "442e6b5a-ac9e-453e-8a9d-a052df9c169c"
+		user_id      string = r.FormValue("author_id")
 		title        string = r.FormValue("title")
 		text_content string = r.FormValue("text_content")
 	)

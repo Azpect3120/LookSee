@@ -7,10 +7,9 @@ import (
 	"github.com/Azpect3120/LookSee/api/database"
 	"github.com/Azpect3120/LookSee/api/model"
 	"github.com/gorilla/mux"
-	"github.com/gorilla/sessions"
 )
 
-func Create(port int, connectionString, sessionKey string) (*model.Server, error) {
+func Create(port int, connectionString string) (*model.Server, error) {
 	if db, err := database.Create(connectionString); err != nil {
 		return nil, err
 	} else {
@@ -19,7 +18,6 @@ func Create(port int, connectionString, sessionKey string) (*model.Server, error
 			Port:      port,
 			Endpoints: make(map[string]func(http.ResponseWriter, *http.Request)),
 			Database:  db,
-			Session:   sessions.NewCookieStore([]byte(sessionKey)),
 		}, nil
 	}
 }
