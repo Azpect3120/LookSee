@@ -1,20 +1,30 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { StyleSheet, View, FlatList, Dimensions } from 'react-native';
-import { Video } from 'expo-av';
+import { Video, ResizeMode } from 'expo-av';
 import { useNavigate } from 'react-router-native';
 import NavBar from './components/NavBar';
 
 const { width, height } = Dimensions.get('window');
-
+    
 export const Home = () => {
     const [visibleItem, setVisibleItem] = useState(null); 
+    const [videos, setVideos] = useState([]);
     const viewabilityConfig = useRef({
         itemVisiblePercentThreshold: 50 
     }).current;
-    const videos = [
-        "https://res.cloudinary.com/dlmvtzxup/video/upload/v1707421203/LookSee/lruhuvcgrj66fyfuphuu.mp4",
-        "https://res.cloudinary.com/dlmvtzxup/video/upload/v1707421202/LookSee/qjcrfyryfm5adesx7b7x.mp4"
-    ];
+
+    useEffect(() => {
+      fetch("https://looksee.gophernest.net/posts?page=1")
+        .then((res) => res.json())
+        .then((data) => {
+            let temp = [];
+          for (let i = 0; i < data.length; i++) {
+            temp.push("https://mss.gophernest.net" + data[i].upload.msspath);
+          }
+          setVideos(temp);
+        })
+        .catch((err) => console.error(err));
+    }, []);
 
     const navigate = useNavigate();
     
@@ -25,21 +35,23 @@ export const Home = () => {
         }
     }).current;
 
-    const renderVideo = ({ item }) => (
-        <View style={styles.videoContainer}>
+    const renderVideo = ({ item }) => {
+        console.log(item)
+        
+        return (<View style={styles.videoContainer}>
             <Video
                 source={{ uri: item }}
                 rate={1.0}
                 volume={1.0}
                 isMuted={false}
-                resizeMode="cover"
+                resizeMode={ResizeMode.COVER}
                 shouldPlay={visibleItem === item}
                 isLooping
                 style={styles.video}
                 useNativeControls={false}
             />
-        </View>
-    );
+        </View>)
+    };
 
     return (
         <>
