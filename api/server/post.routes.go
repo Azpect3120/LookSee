@@ -208,10 +208,12 @@ func CreatePost(w http.ResponseWriter, r *http.Request, s *model.Server) {
 		user_id      string = r.FormValue("author_id")
 		title        string = r.FormValue("title")
 		text_content string = r.FormValue("text_content")
+    address      string = r.FormValue("address")
 	)
 
+
 	// Create post in database
-	post, err := database.CreatePost(s.Database, uuid.NewString(), user_id, title, text_content, upload, time.Now().UTC())
+	post, err := database.CreatePost(s.Database, uuid.NewString(), user_id, title, text_content, address, upload, time.Now().UTC())
 	if err != nil {
 		println(err.Error())
 		http.Error(w, "Error creating post in database", http.StatusInternalServerError)

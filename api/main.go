@@ -27,6 +27,7 @@ func main() {
 	// Name of the file uploaded should be `video_upload`
 	// Fields:
 	//	author_id string
+  //  address string
 	//	title string
 	//	text_content string
 	server.NewEndpoint(s, "/posts", func(w http.ResponseWriter, r *http.Request) {

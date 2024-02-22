@@ -40,18 +40,19 @@ func CreateUpload(db *model.Database, id, mssFolderID, mssMediaID, mssPath strin
 // is stored in the 'upload' which
 // information can be retrieved from
 // the MSS for more detailed information.
-func CreatePost(db *model.Database, id, author, title, textContent string, upload *model.Upload, created time.Time) (*model.Post, error) {
+func CreatePost(db *model.Database, id, author, title, textContent, address string, upload *model.Upload, created time.Time) (*model.Post, error) {
 	// Create SQL statement
 	stmt, err := db.Conn.Prepare(
 		`WITH inserted_post AS (
-			INSERT INTO posts (id, author, title, video_content, text_content, created) 
-			VALUES  ($1, $2, $3, $4, $5, $6) 
+			INSERT INTO posts (id, author, title, video_content, text_content, address, created) 
+			VALUES  ($1, $2, $3, $4, $5, $6, $7) 
 			RETURNING *
 		)
 		SELECT 
 			p.id AS post_id,
 			p.title AS post_title,
 			p.text_content AS post_text_content,
+      p.address,
 			p.created AS post_created,
 			u.id AS user_id, 
 			u.username, 
@@ -70,10 +71,11 @@ func CreatePost(db *model.Database, id, author, title, textContent string, uploa
 	var likes []byte
 
 	// Execute statement
-	if err := stmt.QueryRow(id, author, title, upload.ID, textContent, created).Scan(
+	if err := stmt.QueryRow(id, author, title, upload.ID, textContent, address, created).Scan(
 		&p.ID,
 		&p.Title,
 		&p.TextContent,
+    &p.Address,
 		&p.Created,
 		&p.Author.ID,
 		&p.Author.Username,
@@ -112,6 +114,7 @@ func GetPosts(db *model.Database, count, page int) ([]*model.Post, error) {
 			posts.title,
 			posts.video_content,
 			posts.text_content,
+      posts.address,
 			posts.created as p_created,
 			uploads.id as upload_id,
 			uploads.mss_folder_id,
@@ -120,7 +123,6 @@ func GetPosts(db *model.Database, count, page int) ([]*model.Post, error) {
 			uploads.created as upload_created,
 			users.id as user_id,
 			users.username,
-			users.password,
 			users.created as user_created
 		FROM posts INNER JOIN uploads on posts.video_content = uploads.id
 		INNER JOIN users ON posts.author = users.id
@@ -154,6 +156,7 @@ func GetPosts(db *model.Database, count, page int) ([]*model.Post, error) {
 			&post.Title,
 			&post.Upload.ID,
 			&post.TextContent,
+      &post.Address,
 			&post.Created,
 			&upload.ID,
 			&upload.FolderID,
@@ -162,7 +165,6 @@ func GetPosts(db *model.Database, count, page int) ([]*model.Post, error) {
 			&upload.Created,
 			&user.ID,
 			&user.Username,
-			&user.Password,
 			&user.Created,
 		)
 		post.Upload = *upload
@@ -184,7 +186,8 @@ func GetPostById(db *model.Database, id string) (*model.Post, error) {
 			posts.author,
 			posts.title,
 			posts.video_content,
-			posts.text_content,
+      posts.text_content,
+      posts.address,
 			posts.created as p_created,
 			uploads.id as upload_id,
 			uploads.mss_folder_id,
@@ -193,7 +196,6 @@ func GetPostById(db *model.Database, id string) (*model.Post, error) {
 			uploads.created as upload_created,
 			users.id as user_id,
 			users.username,
-			users.password,
 			users.created as user_created
 		FROM posts INNER JOIN uploads on posts.video_content = uploads.id
 		INNER JOIN users ON posts.author = users.id
@@ -213,6 +215,7 @@ func GetPostById(db *model.Database, id string) (*model.Post, error) {
 		&post.Title,
 		&post.Upload.ID,
 		&post.TextContent,
+    &post.Address,
 		&post.Created,
 		&post.Upload.ID,
 		&post.Upload.FolderID,
@@ -221,7 +224,6 @@ func GetPostById(db *model.Database, id string) (*model.Post, error) {
 		&post.Upload.Created,
 		&post.Author.ID,
 		&post.Author.Username,
-		&post.Author.Password,
 		&post.Author.Created,
 	)
 	if err != nil {
