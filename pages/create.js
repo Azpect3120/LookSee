@@ -60,7 +60,7 @@ export const Create = () => {
   };
 
   const handleSubmit = async () => {
-    const backendURL = "https://www.looksee.gophernest.net/posts";
+    const backendURL = "https://looksee.gophernest.net/posts";
     let localUri = formData.file;
     let filename = localUri.split("/").pop();
     let type = `video/${filename.split('.').pop()}`;
@@ -68,7 +68,9 @@ export const Create = () => {
     let formDataBackend = new FormData();
     formDataBackend.append("title", formData.title);
     formDataBackend.append("text_content", `${formData.location} ${formData.description}`);
+    formDataBackend.append("address", "6997 N Glen Harbor Blvd");
     formDataBackend.append("video_upload", { uri: localUri, name: filename, type });
+    formDataBackend.append("author_id",  "442e6b5a-ac9e-453e-8a9d-a052df9c169c");
 
     try {
       let response = await fetch(backendURL, {
@@ -77,7 +79,7 @@ export const Create = () => {
       });
       if (response.ok) {
         Alert.alert("Form submitted successfully");
-        navigate("/success");
+        navigate("/");
       } else {
         Alert.alert("Form submission failed", `Status Code: ${response.status}`);
       }

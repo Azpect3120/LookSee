@@ -8,6 +8,7 @@ import { Create } from './pages/create';
 import { Inbox } from './pages/inbox';
 import { Profile } from './pages/profile';
 import { Login } from './pages/login';
+import GeocodeComponent from './pages/map';
 import * as SplashScreen from 'expo-splash-screen';
 import { useFonts } from 'expo-font';
 
@@ -40,7 +41,7 @@ export default function App() {
     <View style={styles.container}>
       <NativeRouter>
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<GeocodeComponent />} />
           <Route path="/following" element={<Following />} />
           <Route path="/create" element={<Create />} />
           <Route path="/inbox" element={<Inbox />} />
