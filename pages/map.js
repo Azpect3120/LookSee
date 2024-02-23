@@ -6,6 +6,7 @@ import Carousel from 'react-native-snap-carousel';
 import axios from 'axios';
 import * as Location from 'expo-location';
 import { PanGestureHandler, State, GestureHandlerRootView } from 'react-native-gesture-handler';
+import NavBar from './components/NavBar';
 
 const { width, height } = Dimensions.get('window');
 
@@ -38,60 +39,68 @@ const GeocodeComponent = () => {
         })();
 
         const fetchLocations = async () => {
+            const aggregatedLocations = {};
             for (const video of videos) {
                 const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(video.address)}`;
                 try {
                     const response = await axios.get(url);
                     if (response.data && response.data.length > 0) {
                         const { lat, lon } = response.data[0];
-                        setLocations(prevLocations => [
-                            ...prevLocations,
-                            {
+                        if (!aggregatedLocations[video.address]) {
+                            aggregatedLocations[video.address] = {
                                 latitude: parseFloat(lat),
                                 longitude: parseFloat(lon),
                                 address: video.address,
-                                videos: videos.filter(v => v.address === video.address),
-                            }
-                        ]);
+                                videos: [video],
+                            };
+                        } else {
+                            aggregatedLocations[video.address].videos.push(video);
+                        }
                     }
                 } catch (error) {
                     console.error('Geocoding error:', error);
                     Alert.alert('Failed to retrieve location');
                 }
             }
+            setLocations(Object.values(aggregatedLocations));
         };
 
         fetchLocations();
     }, []);
 
     const renderItem = ({ item }) => {
+        const onSwipeAnywhere = event => {
+            if (event.nativeEvent.translationX < 100 && event.nativeEvent.state === State.END) {
+                setCarouselVisible(false);
+            }
+        };
+
         return (
-            <View style={styles.fullScreen}>
-                <Video
-                    source={{ uri: item.uri }}
-                    rate={1.0}
-                    volume={1.0}
-                    isMuted={false}
-                    resizeMode="cover"
-                    shouldPlay={true}
-                    isLooping
-                    useNativeControls
-                    style={styles.fullScreenVideo}
-                />
-            </View>
+            <GestureHandlerRootView style={styles.fullScreen}>
+                <PanGestureHandler
+                    onGestureEvent={onSwipeAnywhere}
+                    onHandlerStateChange={onSwipeAnywhere}>
+                    <View style={styles.fullScreen}>
+                        <Video
+                            source={{ uri: item.uri }}
+                            rate={1.0}
+                            volume={1.0}
+                            isMuted={false}
+                            resizeMode="cover"
+                            shouldPlay
+                            isLooping
+                            useNativeControls
+                            style={styles.fullScreenVideo}
+                        />
+                    </View>
+                </PanGestureHandler>
+            </GestureHandlerRootView>
         );
     };
 
     const onMarkerPress = (location) => {
-        console.log('Marker pressed', location); 
         setSelectedLocation(location);
         setCarouselVisible(true);
-    };
-
-    const onSwipeLeft = event => {
-        if (event.nativeEvent.translationX < -100 && event.nativeEvent.state === State.END) {
-            setCarouselVisible(false);
-        }
     };
 
     return (
@@ -110,6 +119,8 @@ const GeocodeComponent = () => {
                                 longitude: location.longitude,
                             }}
                             onPress={() => onMarkerPress(location)}
+                           
+                            scale={1 + 0.1 * (location.videos.length - 1)} 
                         />
                     ))}
                 </MapView>
@@ -119,23 +130,18 @@ const GeocodeComponent = () => {
                 </View>
             )}
             {carouselVisible && selectedLocation && (
-                <GestureHandlerRootView>
-                <PanGestureHandler
-                    onGestureEvent={onSwipeLeft}
-                    onHandlerStateChange={onSwipeLeft}>
-                    <View style={styles.fullScreenCarousel}>
-                        <Carousel
-                            data={selectedLocation.videos}
-                            renderItem={renderItem}
-                            sliderWidth={width}
-                            itemWidth={width}
-                            onSnapToItem={index => console.log(`Selected video index: ${index}`)}
-                        />
-                    </View>
-                </PanGestureHandler>
-                </GestureHandlerRootView>
+                <View style={styles.fullScreenCarousel}>
+                    <Carousel
+                        data={selectedLocation.videos}
+                        renderItem={renderItem}
+                        sliderWidth={width}
+                        itemWidth={width}
+                        onSnapToItem={index => console.log(`Selected video index: ${index}`)}
+                    />
+                </View>
                 
             )}
+           
         </View>
     );
 };
@@ -157,16 +163,20 @@ const styles = StyleSheet.create({
         height: height,
         justifyContent: 'center',
         alignItems: 'center',
+        position: 'absolute',
+        top: 0, 
     },
     fullScreenVideo: {
         width: '100%',
         height: '100%',
     },
     fullScreenCarousel: {
+        position: 'absolute',
+        top : 0,
         width: width,
-        height: height,
+        height: height, 
         justifyContent: 'center',
-        backgroundColor: 'rgba(0,0,0,0.9)', 
+        backgroundColor: 'rgba(0,0,0,0.5)', 
         zIndex: 10, 
     },
     loadingContainer: {
