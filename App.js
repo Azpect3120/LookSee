@@ -11,6 +11,7 @@ import { Login } from './pages/login';
 import Navbar from './pages/components/NavBar'
 import * as SplashScreen from 'expo-splash-screen';
 import { useFonts } from 'expo-font';
+import GeocodeComponent from './pages/map';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -42,6 +43,7 @@ export default function App() {
       <NativeRouter>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path='/map' element={<GeocodeComponent />} />
           <Route path="/following" element={<Following />} />
           <Route path="/create" element={<Create />} />
           <Route path="/inbox" element={<Inbox />} />

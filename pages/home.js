@@ -5,7 +5,10 @@ import {
   FlatList,
   Dimensions,
   ActivityIndicator,
+  TouchableOpacity,
+  Text 
 } from "react-native";
+import axios from "axios";
 import { Video, ResizeMode } from "expo-av";
 import { useNavigate } from "react-router-native";
 import NavBar from "./components/NavBar";
@@ -27,28 +30,34 @@ export const Home = () => {
       if (loading || !hasMore) return;
       setLoading(true);
       try {
+        console.log(`Fetching videos for page ${page}`);
         const res = await fetch(
           `https://looksee.gophernest.net/posts?page=${page}`
         );
-        const data = await res.json();
-        if (data.length > 0) {
-          let temp = data.map(
-            (video) => "https://mss.gophernest.net" + video.upload.msspath
-          );
-          setVideos((prevVideos) => [...prevVideos, ...temp]);
+        if (!res.ok) {
+          console.error("Server responded with an error:", res.status);
+          return;
+        }
+        const jsonData = await res.json();
+
+        const videoUrls = jsonData.map(
+          (video) => `https://mss.gophernest.net${video.upload.msspath}`
+        );
+        if (videoUrls.length > 0) {
+          setVideos((prevVideos) => [...prevVideos, ...videoUrls]);
           setPage((prevPage) => prevPage + 1);
         } else {
           setHasMore(false);
         }
       } catch (err) {
-        console.error(err);
+        console.error("Error fetching videos:", err);
       } finally {
         setLoading(false);
       }
     };
 
     fetchVideos();
-  }, [page]);
+  }, [page, loading, hasMore]);
 
   const navigate = useNavigate();
 
@@ -78,6 +87,12 @@ export const Home = () => {
   return (
     <>
       <View style={styles.container}>
+        <TouchableOpacity
+          style={styles.mapButton}
+          onPress={() => navigate("/map")}
+        >
+          <Text style={styles.mapButtonText}>Map</Text>
+        </TouchableOpacity>
         <FlatList
           data={videos}
           renderItem={renderVideo}
@@ -157,4 +172,17 @@ const styles = StyleSheet.create({
     fontSize: 35,
     fontFamily: "Arvo Bold",
   },
+  mapButton: {
+    position: 'absolute',
+    top: 40, 
+    left: 10,
+    backgroundColor: 'blue',
+    padding: 10,
+    borderRadius: 5,
+    zIndex: 10,
+},
+mapButtonText: {
+    color: '#fff',
+    fontSize: 16,
+},
 });
