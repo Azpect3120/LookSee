@@ -166,6 +166,7 @@ func CreatePost(w http.ResponseWriter, r *http.Request, s *model.Server) {
 	}
 
 	// Send data to the Media Storage Server
+	// DOCS: https://github.com/Azpect3120/MediaStorageServer
 	folderID := "e8c730cc-687c-40fc-bd3f-babfe91ebe64" // Temp folder
 	mssURL := fmt.Sprintf("https://mss.gophernest.net/v1/images/%s", folderID)
 	response, err := httpClient.Post(mssURL, writer.FormDataContentType(), &requestBody)
