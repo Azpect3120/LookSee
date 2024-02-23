@@ -32,7 +32,7 @@ export const Create = () => {
   
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Videos,
-      allowsEditing: true, // This is limited editing capability
+      allowsEditing: true, 
       aspect: [4, 3],
       quality: 1,
       videoMaxDuration: 60,
@@ -40,7 +40,7 @@ export const Create = () => {
 
     if (!result.canceled && result.assets[0].uri) {
       setFormData({ ...formData, file: result.assets[0].uri, type: "video" });
-      setCurrentStep(currentStep + 1); // Proceed to the next step after selecting a video
+      setCurrentStep(currentStep + 1);
     } else {
       Alert.alert("Error", "No video was selected.");
     }
@@ -51,12 +51,9 @@ export const Create = () => {
   };
 
   const handleSubmit = async () => {
-    // Your submit logic here
     console.log(formData);
-    // Navigate or reset form as needed
   };
 
-  // Render functions for each step
   const renderUploadVideoStep = () => (
     <View style={styles.stepContainer}>
       <TouchableOpacity onPress={pickMedia} style={styles.button}>
@@ -156,5 +153,4 @@ const styles = StyleSheet.create({
     color: "#fff",
     fontWeight: "bold",
   },
-  // Add other styles as needed
 });
