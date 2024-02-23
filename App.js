@@ -8,6 +8,7 @@ import { Create } from './pages/create';
 import { Inbox } from './pages/inbox';
 import { Profile } from './pages/profile';
 import { Login } from './pages/login';
+import Navbar from './pages/components/NavBar'
 import * as SplashScreen from 'expo-splash-screen';
 import { useFonts } from 'expo-font';
 
@@ -47,6 +48,7 @@ export default function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/login" element={<Login />} />
         </Routes>
+        <Navbar />
       </NativeRouter>
     </View>
   );
