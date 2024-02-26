@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, StatusBar } from 'react-native';
+import { StyleSheet, View, StatusBar, Text } from 'react-native';
 import { useLocation, useNavigate } from 'react-router-native';
 import NavBar from './components/NavBar'
 
@@ -12,8 +12,8 @@ export const Inbox = () => {
         <>
             <StatusBar barStyle='dark-content' />
             <View style={styles.container}>
-                <View style={styles.content}>
-
+                <View style={styles.header}>
+                    <Text>Inbox</Text>
                 </View>
                 <NavBar />
             </View>
@@ -27,4 +27,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
     },
+    header: {
+        
+    }
 })

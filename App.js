@@ -12,6 +12,7 @@ import Navbar from './pages/components/NavBar'
 import * as SplashScreen from 'expo-splash-screen';
 import { useFonts } from 'expo-font';
 import GeocodeComponent from './pages/map';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 SplashScreen.preventAutoHideAsync();
 

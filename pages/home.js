@@ -12,6 +12,8 @@ import axios from "axios";
 import { Video, ResizeMode } from "expo-av";
 import { useNavigate } from "react-router-native";
 import NavBar from "./components/NavBar";
+import { Feather } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const { width, height } = Dimensions.get("window");
 
@@ -24,6 +26,13 @@ export const Home = () => {
   const viewabilityConfig = useRef({
     itemVisiblePercentThreshold: 50,
   }).current;
+
+  const getStorage = async () => {
+    const result = await AsyncStorage.getItem("SessionAccount");
+    console.log(result);
+  }
+
+  getStorage();
 
   useEffect(() => {
     const fetchVideos = async () => {
@@ -91,7 +100,7 @@ export const Home = () => {
           style={styles.mapButton}
           onPress={() => navigate("/map")}
         >
-          <Text style={styles.mapButtonText}>Map</Text>
+          <Feather name="map" size={36} color="black" />
         </TouchableOpacity>
         <FlatList
           data={videos}
@@ -176,13 +185,12 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 40, 
     left: 10,
-    backgroundColor: 'blue',
-    padding: 10,
+    padding: 16,
     borderRadius: 5,
     zIndex: 10,
-},
-mapButtonText: {
-    color: '#fff',
-    fontSize: 16,
-},
+  },
+  mapButtonText: {
+      color: '#fff',
+      fontSize: 16,
+  },
 });

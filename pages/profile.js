@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, View, StatusBar, Text, TouchableOpacity } from 'react-native';
 import { useLocation, useNavigate } from 'react-router-native';
 import NavBar from './components/NavBar'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const Profile = () => {
     
@@ -48,7 +49,11 @@ const styles = StyleSheet.create({
         top: 0,
         flex: 1,
         alignItems: "center",
-        justifyContent: "center"
+        justifyContent: "center",
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 3,
     },
     accountName: {
         color: "#000",

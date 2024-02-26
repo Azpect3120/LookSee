@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { StyleSheet, View, StatusBar, TextInput, Text, KeyboardAvoidingView, TouchableOpacity } from 'react-native';
 import { useLocation, useNavigate } from 'react-router-native';
 import NavBar from './components/NavBar'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const Login = () => {
     
@@ -18,22 +19,25 @@ export const Login = () => {
     };
 
     const handleSubmit = async () => {
-        const backendURL = "https://www.looksee.gophernest.net/login";
+        const backendURL = "https://looksee.gophernest.net/login";
     
         let formDataBackend = new FormData();
         formDataBackend.append("username", formData.username);
         formDataBackend.append("password", formData.password);
-    
         try {
           let response = await fetch(backendURL, {
             method: "POST",
-            body: formDataBackend,
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded",
+            },
+            body: new URLSearchParams(formData).toString()
           });
-          if (response.ok) {
-            Alert.alert("Form submitted successfully");
-            navigate("/success");
+          const data = await response.json();
+          if (data.status === 200) {
+            await AsyncStorage.setItem("SessionAccount", JSON.stringify(data.user));
+            navigate("/home");
           } else {
-            Alert.alert("Form submission failed", `Status Code: ${response.status}`);
+            alert("Form submission failed", `Status Code: ${data.status}`);
           }
         } catch (error) {
           console.error("Submission error:", error);
