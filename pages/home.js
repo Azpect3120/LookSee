@@ -8,7 +8,6 @@ import {
   TouchableOpacity,
   Text 
 } from "react-native";
-import axios from "axios";
 import { Video, ResizeMode } from "expo-av";
 import { useNavigate } from "react-router-native";
 import NavBar from "./components/NavBar";
