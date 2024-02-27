@@ -26,13 +26,6 @@ export const Home = () => {
     itemVisiblePercentThreshold: 50,
   }).current;
 
-  const getStorage = async () => {
-    const result = await AsyncStorage.getItem("SessionAccount");
-    console.log(result);
-  }
-
-  getStorage();
-
   useEffect(() => {
     const fetchVideos = async () => {
       if (loading || !hasMore) return;

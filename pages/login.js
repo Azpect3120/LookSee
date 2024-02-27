@@ -5,7 +5,7 @@ import NavBar from './components/NavBar'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const Login = () => {
-    
+
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -35,7 +35,7 @@ export const Login = () => {
           const data = await response.json();
           if (data.status === 200) {
             await AsyncStorage.setItem("SessionAccount", JSON.stringify(data.user));
-            navigate("/home");
+            navigate("/profile");
           } else {
             alert("Form submission failed", `Status Code: ${data.status}`);
           }
@@ -44,6 +44,14 @@ export const Login = () => {
           Alert.alert("Submission error", error.message);
         }
       };
+
+      const logout = async () => {
+        const account = await AsyncStorage.getItem("SessionAccount");
+        if (account != null) {
+          AsyncStorage.setItem("SessionAccount", "");
+        }
+      }
+      logout();
 
     return (
         <>

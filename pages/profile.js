@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, StatusBar, Text, TouchableOpacity } from 'react-native';
 import { useLocation, useNavigate } from 'react-router-native';
 import NavBar from './components/NavBar'
@@ -9,23 +9,38 @@ export const Profile = () => {
     const navigate = useNavigate();
     const location = useLocation();
 
+    const [accountInfo, setAccountInfo] = useState({});
+
+    useEffect(() => {
+        const getStorage = async () => {
+            const storage = await AsyncStorage.getItem("SessionAccount");
+            if (storage !== null) {
+                const parsedInfo = JSON.parse(storage);
+                setAccountInfo(parsedInfo);
+            } else {
+                setAccountInfo({ id: null })
+            }
+        }
+        getStorage();
+    }, []);
+
     const handlePress = url => {
         navigate(url);
     }
-    
+
     return (
         <>
             <StatusBar barStyle='dark-content' />
             <View style={styles.container}>
                 <View style={styles.profileInfo}>
-                    <Text style={styles.accountName}>Account Name</Text>
+                    <Text style={styles.accountName}>{(accountInfo.id != null) ? accountInfo.username : "Account"}</Text>
                     <View style={styles.profilePicture}>{/* change to Image component later */}</View>
                     <View style={styles.buttons}>
                         <TouchableOpacity style={styles.button}>
                             <Text style={styles.text}>Edit Profile</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={styles.button} onPress={() => handlePress('/login')}>
-                            <Text style={styles.text}>Log In/Out</Text>
+                            <Text style={styles.text}>{(accountInfo.id != null) ? "Log Out" : "Log In"}</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
