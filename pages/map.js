@@ -17,7 +17,10 @@ const GeocodeComponent = () => {
 
     const videos = [
         { uri: "https://res.cloudinary.com/dlmvtzxup/video/upload/v1707421203/LookSee/lruhuvcgrj66fyfuphuu.mp4", address: "7802 W sells dr" },
-        { uri: "https://res.cloudinary.com/dlmvtzxup/video/upload/v1707421202/LookSee/qjcrfyryfm5adesx7b7x.mp4", address: "2531 S 90th Dr" }
+        { uri: "https://res.cloudinary.com/dlmvtzxup/video/upload/v1707421202/LookSee/qjcrfyryfm5adesx7b7x.mp4", address: "2531 S 90th Dr" },
+        { uri: "https://res.cloudinary.com/dlmvtzxup/video/upload/v1707421202/LookSee/qjcrfyryfm5adesx7b7x.mp4", address: "2202 S 83rd Dr" },
+        { uri: "https://res.cloudinary.com/dlmvtzxup/video/upload/v1707421203/LookSee/lruhuvcgrj66fyfuphuu.mp4", address: "2684 N Springfield St" },
+
     ];
 
     useEffect(() => {
