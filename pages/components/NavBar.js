@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigate, useLocation } from 'react-router-native';
 import { FontAwesome, MaterialIcons, MaterialCommunityIcons, Entypo } from '@expo/vector-icons';
@@ -7,8 +7,11 @@ const NavBar = () => {
     const navigate = useNavigate();
     const location = useLocation();
 
+    const [, setRefreshKey] = useState(0);
+
     const handleNavigate = (route) => {
-        navigate(route);
+        setRefreshKey(prevKey => prevKey + 1);
+        navigate(route, { state: { key: new Date().getTime() } });
     };
 
     return (
